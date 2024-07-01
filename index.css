@@ -1,3 +1,102 @@
 body {
+    font-family: "Smythe", system-ui;
+
+    margin: 0 auto;
+
+    width: 600px;
+}
+
+/**HEADER**/
+header {
+    color: white;
+
+    background-image: url('./media/burger.png');
+    background-repeat: no-repeat;
+
+    padding: 5% 30px;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: 500;
+
     margin: 0;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 500;
+
+    margin: 0;
+}
+
+/***FOOD ITEM***/
+.menu-items {
+    background-color: #F5F5F5;
+
+    min-height: 600px;
+
+    padding: 5% 0;
+}
+.menu-item {
+    background-color: #F5F5F5;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 80%;
+
+    padding-bottom: 2.5%;
+    border-bottom: 1px solid #DEDEDE;
+    margin: 0 auto;
+}
+
+.item-info {
+    display: flex;
+
+    align-items: center;
+}
+
+.emoji {
+    font-size: 70px;
+
+    padding-right: 5%;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 300px;
+}
+
+.item-ingredients {
+    color: #8B8B8B;
+}
+
+.add-to-cart {
+    position: relative;
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+    border: 1.5px solid #DEDEDE;
+
+    &:hover {
+        opacity: .5;
+
+        cursor: pointer;
+    }
+}
+
+.add-to-cart i {
+    position: absolute;
+
+    top: 35%;
+    left: 35%;
+    right: auto;
+
+    color: #3C3C3C;
 }
