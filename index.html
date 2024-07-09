@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <!-- CSS Stylesheet -->
         <link rel="stylesheet" href="index.css">
@@ -18,10 +18,47 @@
             <h1>Jimmy's Diner</h1>
             <h2>The best burgers and pizzas in town.</h2>
         </header>
-        <article id="menu-items" class="menu-items">
-        </article>
+        <div class="menu-container">
+            <article id="menu-items" class="menu-items">
+            </article>
+            <article id="cart" class="cart">
+                <h3>Your Order</h3>
+                <div id="items-in-cart" class="items-in-cart"></div>
+                <div id="discount" class="discount"></div>
+                <div class="total-price">
+                    <h4>Total Price:</h4>
+                    <div id="total"></div>
+                </div>
+                <button type="button" id="complete-order">Complete Order</button>
+            </article>
+            <div id="rate" class="rate"></div>
+            <button type="button" class="new-order-btn" id="new-order-btn">New Order</button>
+        </div>
     	<script src="index.js" type="module"></script>
     </body>
+    <modal class="checkout-modal" id="checkout-modal">
+        <h1>Enter Card Details</h1>
+        <form>
+            <input id="name-input" placeholder="Enter your name" name="name" />
+            <input id="card-input" placeholder="Enter card number" name="card" />
+            <input id="cvv-input" placeholder="Enter CVV" name="cvv" />
+            <button type="button" class="pay-btn" id="pay-btn">Pay</button>
+        </form>
+    </modal>
+    <modal class="rate-modal" id="rate-modal">
+        <section class="modal-inner">
+            <div class="x-modal" id="x-modal"><i class="fa-solid fa-x"></i></div>
+            <h1>Rate Our Service!</h1>
+            <div class="stars" id="stars">
+                <i class="fa-regular fa-star star" id="one-star"></i>
+                <i class="fa-regular fa-star star" id="two-star"></i>
+                <i class="fa-regular fa-star star" id="three-star"></i>
+                <i class="fa-regular fa-star star" id="four-star"></i>
+                <i class="fa-regular fa-star star" id="five-star"></i>
+            </div>
+            <button type="button" class="submit-btn" id="submit-btn">Submit</button>
+        </section>
+    </modal>
 </html>
 
 

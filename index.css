@@ -31,16 +31,15 @@ h2 {
 }
 
 /***FOOD ITEM***/
-.menu-items {
+.menu-container {
     background-color: #F5F5F5;
 
     min-height: 600px;
 
     padding: 5% 0;
 }
-.menu-item {
-    background-color: #F5F5F5;
 
+.menu-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -75,15 +74,242 @@ h2 {
     color: #8B8B8B;
 }
 
-.add-to-cart {
-    position: relative;
+.add-to-cart::before {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #3C3C3C;
+    text-align: center;
 
     width: 50px;
     height: 50px;
 
     border-radius: 50%;
     border: 1.5px solid #DEDEDE;
+}
 
+.add-to-cart:hover {
+    background-color: #DEDEDE;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+/***CART***/
+.cart { 
+    display: none; /*flex after item added to cart*/
+    flex-direction: column;
+
+    width: 80%;
+
+    margin: 0 auto;
+}
+
+h3 {
+    font-size: 22px;
+    text-align: center;
+}
+
+.items-in-cart {
+    border-bottom: 2px solid #393333;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 20px;
+
+    padding-bottom: 16px;
+}
+
+.item-title {
+    display: flex;
+    align-items: center;
+}
+
+.remove {
+    font-size: 12px;
+
+    color: #BBBBBB;
+
+    padding-left: 10%;
+    
+    &:hover {
+        opacity: .5;
+        
+        cursor: pointer;
+    }
+}
+
+.item-total {
+    color: #065F46;
+}
+
+.total-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 20px;
+}
+
+button {
+    background-color: #16DB99;
+    color: white;
+
+    font-weight: bold;
+    font-size: 16px;
+
+    width: 100%;
+
+    padding: 5%;
+    border-radius: 4px;
+    border: none;
+
+    &:hover {
+        cursor: pointer;
+
+        opacity: .5;
+    }
+}
+
+/***DISCOUNT***/
+.discount-section {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 20px;
+
+    padding-top: 16px;
+}
+
+.discount-total {
+    color: #5f0625;
+}
+
+/***CONFIRMATION NOTIFICATION***/
+.confirm-notif {
+    background-color: #ECFDF5;
+    color: #065F46;
+
+    font-size: 20px;
+
+    margin-top: 5%;
+    padding: 5%;
+
+    text-align: center;
+}
+
+/***CHECKOUT MODAL***/
+.checkout-modal {
+    background-color: white;
+
+    display: none; /*flex when displayed*/
+    position: fixed;
+    flex-direction: column;
+
+    width: 450px;
+
+    top: 100px;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+    border-radius: 4px;
+    padding: 5% 2.5%;
+
+    box-shadow: 0px 0px 50px #555;
+}
+
+.checkout-modal h1 {
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+
+    margin-bottom: 5%;
+}
+
+input {
+    width: 89%;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+
+    padding: 4% 5%;
+    border-radius: 4px;
+    border: 1px solid #757575;
+    margin: 2.5% auto;
+}
+
+.pay-btn {
+    margin-top: 5%;
+}
+
+/***NEW ORDER BTN***/
+.new-order-btn {
+    display: none; /*flex when displayed*/
+    justify-content: center;
+
+    text-align: center;
+
+    width: 30%;
+
+    padding: 10px 20px;
+    margin: 5% 35%;
+}
+
+/***RATE MODAL***/
+.rate {
+    width: 80%;
+
+    margin: 0 10%;
+}
+.rate-modal {
+    background-color: white;
+
+    display: none; /*flex when displayed*/
+    position: fixed;
+    flex-direction: column;
+
+    width: 450px;
+
+    top: 100px;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+    border-radius: 4px;
+
+    box-shadow: 0px 0px 50px #555;
+}
+
+.modal-inner {
+    position: relative;
+
+    padding: 5% 2.5%;
+}
+
+.rate-modal h1 {
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+
+    margin-bottom: 5%;
+}
+
+.x-modal {
+    color: black;
+
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+    
     &:hover {
         opacity: .5;
 
@@ -91,12 +317,33 @@ h2 {
     }
 }
 
-.add-to-cart i {
-    position: absolute;
+.stars {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
 
-    top: 35%;
-    left: 35%;
-    right: auto;
+    width: 80%;
 
-    color: #3C3C3C;
+    margin: auto;
+}
+
+.star {
+    font-size: 30px;
+
+    color: #ffde3f;
+    &:hover {
+        opacity: .5;
+
+        cursor: pointer;
+    }
+}
+
+.mini-star {
+    font-size: 15px;
+}
+
+.submit-btn {
+    width: 80%;
+
+    margin: 5% 10% 0 10%;
 }
