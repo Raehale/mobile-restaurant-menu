@@ -37,14 +37,14 @@ submitRateBtn.addEventListener('click', function(){
     rateModal.style.display = 'none';
     newOrderBtn.style.display = 'flex';
 
-    rateMessage();
+    returnTotalStarRating();
 })
 
 /**CLOSE MODAL ON PAY BUTTON CLICK */
 payBtn.addEventListener('click', function(){
     if (validateCardForm()){
         checkoutModal.style.display = 'none';
-        thankYouNotif(nameInput.value);
+        renderThankYouNotif(nameInput.value);
 
         nameInput.value = '';
         cardInput.value = '';
@@ -104,7 +104,7 @@ function getCartItemHTML(itemArr){
     itemCartObj = {id: itemUUID, name: itemArr.name, price: itemArr.price, content: cartItemHTML}
 
     itemsCartArr.push(itemCartObj);
-    mealTotal(itemsCartArr);
+    calculateMealTotal(itemsCartArr);
     return itemsCartArr;
 }
 
@@ -118,7 +118,7 @@ itemsInCartEl.addEventListener('click', function(event){
             itemsCartArr.splice(indexOfItem, 1)
         }
 
-        mealTotal(itemsCartArr);
+        calculateMealTotal(itemsCartArr);
 
         itemsInCartEl.innerHTML = '';
         itemsCartArr.forEach( function(item){
@@ -146,17 +146,22 @@ function validateCardForm(){
     return isFilled
 }
 
-/**CONFIRMATION NOTIFICATION */
-function thankYouNotif(name) {
+/**CONFIRMATION NOTIFICATION HTML */
+function renderThankYouNotif(name) {
     cartEl.innerHTML = `<div class="confirm-notif">
                             Thanks, ${name}! Your order is on its way!
-                        </div>`
+                        </div>`;
                         
+    hideMenuItems();
+}
+
+/**HIDE MENU ITEMS */
+function hideMenuItems() {
     menuItems.style.display = 'none';
 }
 
 /**MEAL TOTAL */
-function mealTotal(items) {
+function calculateMealTotal(items) {
     let nameArray = [];
     cartTotal = 0;
     for (const { name, price } of items) {
@@ -164,158 +169,116 @@ function mealTotal(items) {
         cartTotal += price;
     }
 
-    console.log(nameArray)
-
     const discountEl = document.getElementById('discount');
     discountEl.innerHTML = '';
     nameArray.forEach(function(item){
 
-        if (((nameArray.includes('Beer')) && (nameArray.includes('Pizza')))){
-            cartTotal -= 6;
-            discountEl.innerHTML += `<section class="discount-section">
-                                        <div class="discount-title">
-                                            Meal Deal Discount for Pizza and Beer
-                                        </div>
-                                        <div class="discount-total">-$6</div>
-                                    </section>`;
-            nameArray.splice(nameArray.indexOf('Beer'), 1);
-            nameArray.splice(nameArray.indexOf('Pizza'), 1);
-        }
-
-        if (((nameArray.includes('Beer')) && (nameArray.includes('Hamburger')))){
-            cartTotal -= 4;
-            discountEl.innerHTML += `<section class="discount-section">
-                                        <div class="discount-title">
-                                            Meal Deal Discount for Burger and Beer
-                                        </div>
-                                        <div class="discount-total">-$4</div>
-                                    </section>`;
-            nameArray.splice(nameArray.indexOf('Beer'), 1);
-            nameArray.splice(nameArray.indexOf('Hamburger'), 1);
-            // console.log(nameArray.indexOf('Beer'))
-        }
+        findMealType(discountEl, nameArray);
 
         totalEl.innerHTML = `$${cartTotal}`;
     })
 }
 
-/**RATE */
-const oneStar = document.getElementById('one-star');
-const twoStar = document.getElementById('two-star');
-const threeStar = document.getElementById('three-star');
-const fourStar = document.getElementById('four-star');
-const fiveStar = document.getElementById('five-star');
-const stars = document.getElementsByClassName('star');
+/**DETERMINE MEAL TYPE */
+function findMealType(discountEl, nameArray){
 
-/**RATE MESSAGE */
-const rateEl = document.getElementById('rate');
-function rateMessage() {
-    const stars = document.getElementById('stars');
-    let fullStars = stars.getElementsByClassName('fa-solid');
-    console.log(fullStars)
-    let totalStars = [];
-    for (let i = 0; i < fullStars.length; i++){
-        totalStars.push(`<i class="fa-solid fa-star star mini-star"></i>`)
-    }
-    rateEl.innerHTML += `<div class="confirm-notif">
-                            Thanks for your rating of ${totalStars.join(' ')}, we think you're worth ${totalStars.join(' ')} too!
-                        </div>`
+    renderPizzaMeal(discountEl, nameArray);
+    renderBurgerMeal(discountEl, nameArray);
+
 }
 
-for (let i = 0; i < stars.length; i++){
-    stars[i].addEventListener('click', function(event){
-    
-        if (event.target === fiveStar){
-            oneStar.classList.remove('fa-regular');
-            oneStar.classList.add('fa-solid');
+/**PIZZA MEAL */
+function renderPizzaMeal(discountEl, nameArray){
+    if (((nameArray.includes('Beer')) && (nameArray.includes('Pizza')))){
+        cartTotal -= 6;
+        discountEl.innerHTML += `<section class="discount-section">
+                                    <div class="discount-title">
+                                        Meal Deal Discount for Pizza and Beer
+                                    </div>
+                                    <div class="discount-total">-$6</div>
+                                </section>`;
+        nameArray.splice(nameArray.indexOf('Beer'), 1);
+        nameArray.splice(nameArray.indexOf('Pizza'), 1);
+    }
+}
 
-            twoStar.classList.remove('fa-regular');
-            twoStar.classList.add('fa-solid');
+/**BURGER MEAL */
+function renderBurgerMeal(discountEl, nameArray){
+    if (((nameArray.includes('Beer')) && (nameArray.includes('Hamburger')))){
+        cartTotal -= 4;
+        discountEl.innerHTML += `<section class="discount-section">
+                                    <div class="discount-title">
+                                        Meal Deal Discount for Burger and Beer
+                                    </div>
+                                    <div class="discount-total">-$4</div>
+                                </section>`;
+        nameArray.splice(nameArray.indexOf('Beer'), 1);
+        nameArray.splice(nameArray.indexOf('Hamburger'), 1);
+    }
+}
 
-            threeStar.classList.remove('fa-regular');
-            threeStar.classList.add('fa-solid');
+/**RATE */
+const starsEl = document.getElementById('stars');
+const stars = document.getElementsByClassName('star');
+const rateEl = document.getElementById('rate');
+let cls = '';
 
-            fourStar.classList.remove('fa-regular');
-            fourStar.classList.add('fa-solid');
+starsEl.addEventListener('click', function(event){
+    let starNumber = event.target.dataset.star;
+    addStarRating(starNumber);
+})
 
-            fiveStar.classList.remove('fa-regular');
-            fiveStar.classList.add('fa-solid');
-        } else if (event.target === fourStar){
-            oneStar.classList.remove('fa-regular');
-            oneStar.classList.add('fa-solid');
+function returnTotalStarRating(){
+    const solidStars = starsEl.getElementsByClassName('fa-solid');
+    let totalStars = 0;
+    for (let i = 0; i < solidStars.length; i++){
+        totalStars += 1;
+    }
+    rateMessage(totalStars);
+}
 
-            twoStar.classList.remove('fa-regular');
-            twoStar.classList.add('fa-solid');
+function addStarRating(n){
+    removeStarRating();
 
-            threeStar.classList.remove('fa-regular');
-            threeStar.classList.add('fa-solid');
-
-            fourStar.classList.remove('fa-regular');
-            fourStar.classList.add('fa-solid');
-
-            fiveStar.classList.remove('fa-solid');
-            fiveStar.classList.add('fa-regular');
-        } else if (event.target === threeStar){
-            oneStar.classList.remove('fa-regular');
-            oneStar.classList.add('fa-solid');
-
-            twoStar.classList.remove('fa-regular');
-            twoStar.classList.add('fa-solid');
-
-            threeStar.classList.remove('fa-regular');
-            threeStar.classList.add('fa-solid');
-
-            fourStar.classList.remove('fa-solid');
-            fourStar.classList.add('fa-regular');
-
-            fiveStar.classList.remove('fa-solid');
-            fiveStar.classList.add('fa-regular');
-        } else if (event.target === twoStar){
-            oneStar.classList.remove('fa-regular');
-            oneStar.classList.add('fa-solid');
-
-            twoStar.classList.remove('fa-regular');
-            twoStar.classList.add('fa-solid');
-
-            threeStar.classList.remove('fa-solid');
-            threeStar.classList.add('fa-regular');
-
-            fourStar.classList.remove('fa-solid');
-            fourStar.classList.add('fa-regular');
-
-            fiveStar.classList.remove('fa-solid');
-            fiveStar.classList.add('fa-regular');
-        } else if (event.target === oneStar){
-            oneStar.classList.remove('fa-regular');
-            oneStar.classList.add('fa-solid');
-
-            twoStar.classList.remove('fa-solid');
-            twoStar.classList.add('fa-regular');
-
-            threeStar.classList.remove('fa-solid');
-            threeStar.classList.add('fa-regular');
-
-            fourStar.classList.remove('fa-solid');
-            fourStar.classList.add('fa-regular');
-
-            fiveStar.classList.remove('fa-solid');
-            fiveStar.classList.add('fa-regular');
+    for (let i = 0; i < n; i++){
+        if (n == 1){
+            cls = 'fa-solid one';
+        }
+        if (n == 2){
+            cls = 'fa-solid two';
+        }
+        if (n == 3){
+            cls = 'fa-solid three';
+        }
+        if (n == 4){
+            cls = 'fa-solid four';
+        }
+        if (n == 5){
+            cls = 'fa-solid five';
         }
 
-        function totalStarsCounted(){
-            if (event.target === fiveStar){
-                return 5;
-            } else if (event.target === fourStar){
-                return 4;
-            } else if (event.target === threeStar){
-                return 3;
-            } else if (event.target === twoStar){
-                return 2;
-            } else if (event.target === oneStar){
-                return 1;
-            }
-        }
-    })
+        stars[i].className = 'fa-star star ' + cls;
+    }
+}
+
+function removeStarRating(){
+    let i = 0;
+    while (i < 5){
+        stars[i].className = 'fa-regular fa-star star';
+        i++;
+    }
+}
+
+/**RATE MESSAGE */
+function rateMessage(n) {
+    let totalStars = [];
+    for (let i = 0; i < n; i++){
+        totalStars.push(`<i class="fa-solid fa-star star mini-star"></i>`);
+    }
+
+    rateEl.innerHTML += `<div class="confirm-notif">
+                            Thanks for your rating of ${totalStars.join(' ')}, we think you're worth ${totalStars.join(' ')} too!
+                        </div>`;
 }
 
 /**REFRESH PAGE TO START NEW ORDER */
